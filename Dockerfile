@@ -1,6 +1,7 @@
 FROM sirehna/base-image-debian8-gcc492:latest
 
-RUN apt-get update -yq && \
+RUN printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main\n" > /etc/apt/sources.list && \
+    apt-get update -yq && \
     apt-get install --no-install-recommends -y \
         cmake \
         make \
