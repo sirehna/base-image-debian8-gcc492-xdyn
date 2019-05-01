@@ -1,6 +1,9 @@
 FROM sirehna/base-image-debian8-gcc492:latest
 
-RUN printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main\n" > /etc/apt/sources.list && \
+RUN printf "deb http://archive.debian.org/debian/ jessie main\n" > /etc/apt/sources.list && \
+    printf "deb-src http://archive.debian.org/debian/ jessie main\n" >> /etc/apt/sources.list && \
+    printf "deb http://security.debian.org jessie/updates main\n" >> /etc/apt/sources.list && \
+    printf "deb-src http://security.debian.org jessie/updates main\n" >> /etc/apt/sources.list && \
     apt-get update -yq && \
     apt-get install --no-install-recommends -y \
         cmake \
@@ -100,14 +103,16 @@ RUN git clone https://github.com/zeromq/cppzmq.git && \
     git checkout v4.2.2 && \
     mkdir build && \
     cd build && \
-    cmake .. && \
-        -DCMAKE_C_FLAGS="-fPIC" && \
-        -DCMAKE_CXX_FLAGS="-fPIC" && \
+    cmake \
+        -DCMAKE_C_FLAGS="-fPIC" \
+        -DCMAKE_CXX_FLAGS="-fPIC" \
+        .. && \
     make install && \
     cd .. && \
     rm -rf cppzmq
 
-
 RUN wget https://github.com/sirehna/ssc/releases/download/v8.0.1/ssc_binary_debian8_amd64.deb -O ssc.deb && \
     dpkg -r ssc && \
-    dpkg -i /opt/share/ssc.deb
+    dpkg -i ssc.deb && \
+    rm ssc.deb
+
